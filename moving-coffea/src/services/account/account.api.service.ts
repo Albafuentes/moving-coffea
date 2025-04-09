@@ -1,3 +1,4 @@
+import type { AccountModel } from "@/types/account/model.type";
 import type { AccountApiService } from "@/types/account/service.type";
 
 export const accountApiService = (): AccountApiService => ({
@@ -8,13 +9,13 @@ export const accountApiService = (): AccountApiService => ({
 		}
 		return response.json();
 	},
-	putUser: async (userId: string) => {
-		const response = await fetch(`/api/account/${userId}`, {
+	putUser: async (user: AccountModel.User) => {
+		const response = await fetch(`/api/account/${user.clientId}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({}),
+			body: JSON.stringify(user),
 		});
 		if (!response.ok) {
 			throw new Error("Failed to update user data");
