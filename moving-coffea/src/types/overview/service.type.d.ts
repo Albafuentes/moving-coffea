@@ -1,3 +1,3 @@
-export interface HomeApiService {
-    getHome(): Promise<HomeModel.Sale>;
+export interface OverviewApiService {
+    getOverview(): Promise<HomeModel.Sale>;
 }

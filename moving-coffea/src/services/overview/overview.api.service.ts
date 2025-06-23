@@ -1,6 +1,6 @@
-import type { HomeApiService } from "@/types/overview/service.type";
+import type { OverviewApiService } from "@/types/overview/service.type";
 
-export const overviewApiService = (): HomeApiService => ({
+export const overviewApiService = (): OverviewApiService => ({
     getOverview: async () => {
         const response = await fetch("/api/home");
         if (!response.ok) {

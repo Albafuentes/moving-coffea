@@ -1,7 +1,7 @@
-import { homeApiService } from "@/services/overview/home.api.service";
+import { overviewApiService } from "@/services/overview/overview.api.service";
 import "@testing-library/jest-dom";
 
-describe("home-api.service", () => {
+describe("overview-api.service", () => {
 	beforeEach(() => {
 		global.fetch = jest.fn();
 	});
@@ -12,9 +12,9 @@ describe("home-api.service", () => {
 			json: async () => fakeData,
 		});
 
-		const response = await homeApiService().getHome();
+		const response = await overviewApiService().getOverview();
 
-		expect(fetch).toHaveBeenCalledWith("/api/home");
+		expect(fetch).toHaveBeenCalledWith("/api/overview");
 		expect(response).toEqual(fakeData);
 	});
 });
