@@ -1,3 +1,4 @@
+import { OverviewModel } from "./model.type";
 export interface OverviewApiService {
-    getOverview(): Promise<HomeModel.Sale>;
+  getOverview(): Promise<OverviewModel.Sale>;
 }
