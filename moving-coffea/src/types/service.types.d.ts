@@ -1,4 +1,4 @@
-import type { HomeApiService } from "./home/service.type";
+import type { HomeApiService } from "./overview/service.type";
 import type { AccountApiService } from "./account/service.type";
 import type { DeliveryApiService } from "./delivery/service.type";
 

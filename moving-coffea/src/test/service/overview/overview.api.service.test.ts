@@ -1,4 +1,4 @@
-import { homeApiService } from "@/services/home/home.api.service";
+import { homeApiService } from "@/services/overview/home.api.service";
 import "@testing-library/jest-dom";
 
 describe("home-api.service", () => {
