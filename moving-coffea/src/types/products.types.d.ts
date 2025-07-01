@@ -1,10 +1,15 @@
+export enum ProductsCategory {
+  COFFEA = "coffea",
+  COFFEAMIX = "coffea mix",
+  DESSERTS = "desserts",
+}
+
 export enum Coffea {
-  COFFEALARGE = "coffea large",
-  COFFEAMILKYLARGE = "coffea milky large",
-  COFFEAMIDDLE = "coffea middle",
-  COFFEAMILKYMIDDLE = "coffea milky middle",
   COFFEASHORT = "coffea short",
+  COFFEALARGE = "coffea large",
   COFFEAMILKYSHORT = "coffea milky short",
+  COFFEAMIDDLE = "coffea middle",
+  COFFEAMILKYLARGE = "coffea milky large",
 }
 export enum CoffeaMix {
   COFFEACARAMEL = "coffea caramel",
