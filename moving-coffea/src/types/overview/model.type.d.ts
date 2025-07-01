@@ -1,8 +1,8 @@
+export enum DiscountTypes {
+  DIRECT = "direct",
+  ACCUMULATIVE = "accumulative",
+}
 export namespace OverviewModel {
-  enum DiscountTypes {
-    DIRECT = "direct",
-    ACCUMULATIVE = "accumulative",
-  }
   interface Sale {
     saleInitDate: string;
     saleEndDate: string;

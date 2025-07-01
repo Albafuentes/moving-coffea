@@ -1,7 +1,8 @@
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 import type { StatusError } from "../../../types/api.types";
 import { response } from "../../../mocks/api/overview/response.mock";
-import { errors, isStatusError } from "@/helpers/api/errors.helper";
+import { errors } from "@/helpers/api/errors.helper";
+import { AxiosError } from "axios";
 
 export function GET(request: NextRequest) {
   const token = request.headers.get("token");
@@ -18,9 +19,9 @@ export function GET(request: NextRequest) {
       status: 200,
     });
   } catch (error: unknown) {
-    if (isStatusError(error)) {
+    if (error instanceof AxiosError) {
       return new Response(`${error.message}: ${error.cause}`, {
-        status: error.statusCode,
+        status: error.response?.status || 500,
       });
     }
 
