@@ -8,8 +8,6 @@ import { authApiService } from "@/services/auth/auth.api.service";
 jest.mock("axios");
 
 describe("account-api.service", () => {
-	const id = mockResponse.clientId;
-
 	afterEach(() => {
 		jest.clearAllMocks();
 	});

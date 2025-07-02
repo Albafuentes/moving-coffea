@@ -1,4 +1,5 @@
-import { DiscountTypes, type OverviewModel } from "@/types/overview/model.type";
+import { DiscountTypes } from "@/types/overview/enum.type";
+import type { OverviewModel } from "@/types/overview/model.type";
 import { CoffeaMix } from "@/types/products.types";
 
 export const response: OverviewModel.Sale = {

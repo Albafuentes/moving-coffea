@@ -6,7 +6,7 @@ import type { AuthModel } from "@/types/auth/model.type";
 import { AxiosError } from "axios";
 import type { NextRequest } from "next/server";
 
-let authUserInfo: AccountModel.User & AuthModel.Request = {
+const authUserInfo: AccountModel.User & AuthModel.Request = {
     clientEmail: process.env.NEXT_PUBLIC_USERNAME ?? "",
     clientPassword: process.env.NEXT_PUBLIC_PASSWORD ?? "",
     clientId: "1234567890",
@@ -15,26 +15,30 @@ let authUserInfo: AccountModel.User & AuthModel.Request = {
     discountQR: "DISCOUNT10-ABC123XYZ"
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
-    const { id } = params;
+//signin
+export async function POST(request: NextRequest) {
     const credentials: AuthModel.Request = await request.json();
-
     try {
-
-        if (!id || id !== authUserInfo.clientId) {
-            const error = new Error(errors[404].message);
-            error.cause = errors[404].cause;
-            const errorStatus: StatusError = { ...error, statusCode: 404 };
+        if (!credentials || !credentials.clientEmail || !credentials.clientPassword) {
+            const error = new Error(errors[400].message);
+            error.cause = errors[400].cause;
+            const errorStatus: StatusError = { ...error, statusCode: 400 };
             throw errorStatus;
         }
 
-        authUserInfo = { ...authUserInfo, clientName: credentials.clientName, clientEmail: credentials.clientEmail, clientPassword: credentials.clientPassword };
-        const token = createToken(credentials.clientName);
+        if (credentials.clientEmail !== authUserInfo.clientEmail || credentials.clientPassword !== authUserInfo.clientPassword || credentials.clientName !== authUserInfo.clientName) {
+            const error = new Error(errors[401].message);
+            error.cause = errors[401].cause;
+            const errorStatus: StatusError = { ...error, statusCode: 401 };
+            throw errorStatus;
+        }
 
+        const token = createToken(credentials.clientName);
         return new Response(JSON.stringify({ token }), {
             headers: { "Content-Type": "application/json" },
             status: 200,
         });
+
     } catch (error: unknown) {
         if (error instanceof AxiosError) {
             return new Response(`${error.message}: ${error.cause}`, {
@@ -46,26 +50,11 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     }
 }
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-    const { id } = params;
+//signout
+export async function DELETE() {
+
     try {
-
-        if (!id || id !== authUserInfo.clientId) {
-            const error = new Error(errors[404].message);
-            error.cause = errors[404].cause;
-            const errorStatus: StatusError = { ...error, statusCode: 404 };
-            throw errorStatus;
-        }
-
-        const response: AccountModel.User = {
-            clientId: authUserInfo.clientId,
-            clientName: authUserInfo.clientName,
-            clientEmail: authUserInfo.clientEmail,
-            points: authUserInfo.points,
-            discountQR: authUserInfo.discountQR,
-        };
-
-        return new Response(JSON.stringify({ response }), {
+        return new Response(null, {
             headers: { "Content-Type": "application/json" },
             status: 200,
         });

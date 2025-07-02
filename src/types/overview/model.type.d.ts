@@ -1,7 +1,5 @@
-export enum DiscountTypes {
-  DIRECT = "direct",
-  ACCUMULATIVE = "accumulative",
-}
+import type { Products } from "@/types/products/model.type";
+
 export namespace OverviewModel {
   interface Sale {
     saleInitDate: string;
