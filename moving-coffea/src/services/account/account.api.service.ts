@@ -1,5 +1,5 @@
-import type { AccountModel } from "@/types/account/model.type";
 import type { AccountApiService } from "@/types/account/service.type";
+import type { AuthModel } from "@/types/auth/model.type";
 import axios from "axios";
 
 export const accountApiService = (): AccountApiService => ({
@@ -10,7 +10,7 @@ export const accountApiService = (): AccountApiService => ({
 		}
 		return response.data;
 	},
-	putUser: async (user: AccountModel.Request & { name: string }, userId: string) => {
+	putUser: async (user: AuthModel.Request & { name: string }, userId: string) => {
 		const response = await axios.put(`/api/account/${userId}`, {
 			headers: {
 				"Content-Type": "application/json",
@@ -19,21 +19,6 @@ export const accountApiService = (): AccountApiService => ({
 		});
 		if (response.status !== 200) {
 			throw new Error("Failed to update user data");
-		}
-		return response.data;
-	},
-	signout: async () => {
-		const response = await axios.delete('/api/account');
-		if (response.status !== 200) {
-			throw new Error("Failed to delete user data");
-		}
-		return response.data;
-	},
-
-	signin: async (credentials: AccountModel.Request) => {
-		const response = await axios.post('/api/account', credentials);
-		if (response.status !== 200) {
-			throw new Error("Failed to delete user data");
 		}
 		return response.data;
 	},

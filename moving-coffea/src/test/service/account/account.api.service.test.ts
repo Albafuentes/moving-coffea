@@ -1,9 +1,9 @@
 import { accountApiService } from "@/services/account/account.api.service";
-import type { AccountModel } from "@/types/account/model.type";
 import "@testing-library/jest-dom";
 import axios from "axios";
 import { response as mockResponse } from "@/mocks/api/account/response.mock";
 import { createToken } from "@/helpers/api/jwt.helper";
+import type { AuthModel } from "@/types/auth/model.type";
 
 jest.mock("axios");
 
@@ -24,7 +24,7 @@ describe("account-api.service", () => {
 	});
 
 	it("Should return new user when putUser is called", async () => {
-		const request: AccountModel.Request = {
+		const request: AuthModel.Request = {
 			clientEmail: "francisdoe@mail.es",
 			clientPassword: "password123",
 			clientName: "Francis Doe",
@@ -40,31 +40,5 @@ describe("account-api.service", () => {
 			}, user: request
 		});
 		expect(response).toEqual(token);
-	});
-
-	it("Should return projects when signout is called", async () => {
-		(axios.delete as jest.Mock).mockResolvedValue({
-			ok: true,
-			status: 200,
-		});
-
-		await accountApiService().signout();
-
-		expect(axios.delete).toHaveBeenCalledWith('/api/account');
-	});
-
-	it("Should return token when signin is called", async () => {
-		const token = createToken(mockResponse.clientName);
-		(axios.post as jest.Mock).mockResolvedValue({ data: token, status: 200 });
-
-		const resquest: AccountModel.Request = {
-			clientEmail: process.env.NEXT_PUBLIC_USERNAME ?? "",
-			clientPassword: process.env.NEXT_PUBLIC_PASSWORD ?? "",
-			clientName: mockResponse.clientName,
-		};
-
-		await accountApiService().signin(resquest);
-
-		expect(axios.post).toHaveBeenCalledWith('/api/account', resquest);
 	});
 });

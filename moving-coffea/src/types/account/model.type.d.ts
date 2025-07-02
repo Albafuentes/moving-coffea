@@ -1,10 +1,4 @@
 export namespace AccountModel {
-
-	interface Request {
-		clientEmail: string;
-		clientPassword:string;
-		clientName: string;
-	}
 	interface User {
 		clientId: string;
 		clientName: string;

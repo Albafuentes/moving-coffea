@@ -2,10 +2,11 @@ import { errors } from "@/helpers/api/errors.helper";
 import { createToken } from "@/helpers/api/jwt.helper";
 import type { AccountModel } from "@/types/account/model.type";
 import type { StatusError } from "@/types/api.types";
+import type { AuthModel } from "@/types/auth/model.type";
 import { AxiosError } from "axios";
 import type { NextRequest } from "next/server";
 
-const authUserInfo: AccountModel.User & AccountModel.Request = {
+const authUserInfo: AccountModel.User & AuthModel.Request = {
     clientEmail: process.env.NEXT_PUBLIC_USERNAME ?? "",
     clientPassword: process.env.NEXT_PUBLIC_PASSWORD ?? "",
     clientId: "1234567890",
@@ -16,7 +17,7 @@ const authUserInfo: AccountModel.User & AccountModel.Request = {
 
 //signin
 export async function POST(request: NextRequest) {
-    const credentials: AccountModel.Request = await request.json();
+    const credentials: AuthModel.Request = await request.json();
     try {
         if (!credentials || !credentials.clientEmail || !credentials.clientPassword) {
             const error = new Error(errors[400].message);
