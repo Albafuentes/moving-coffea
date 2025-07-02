@@ -26,7 +26,7 @@ jobs:
           cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: npm install --frozen-lockfile
+        run: npm install
       
       - name: 🔍 Quality checker
         run: |
