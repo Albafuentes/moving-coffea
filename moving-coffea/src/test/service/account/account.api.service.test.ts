@@ -1,66 +1,44 @@
 import { accountApiService } from "@/services/account/account.api.service";
-import type { AccountModel } from "@/types/account/model.type";
 import "@testing-library/jest-dom";
+import axios from "axios";
+import { response as mockResponse } from "@/mocks/api/account/response.mock";
+import { createToken } from "@/helpers/api/jwt.helper";
+import type { AuthModel } from "@/types/auth/model.type";
+
+jest.mock("axios");
 
 describe("account-api.service", () => {
-	const id = "123";
-	beforeEach(() => {
-		global.fetch = jest.fn();
+	const id = mockResponse.clientId;
+
+	afterEach(() => {
+		jest.clearAllMocks();
 	});
 
 	it("Should return projects when getUser is called", async () => {
-		const fakeData = [{ message: "ok" }];
-		(global.fetch as jest.Mock).mockResolvedValue({
-			ok: true,
-			json: async () => fakeData,
-		});
+		(axios.get as jest.Mock).mockResolvedValue({ data: mockResponse, status: 200 });
 
 		const response = await accountApiService().getUser(id);
 
-		expect(fetch).toHaveBeenCalledWith(`/api/account/${id}`);
-		expect(response).toEqual(fakeData);
+		expect(axios.get).toHaveBeenCalledWith(`/api/account/${id}`);
+		expect(response).toEqual(mockResponse);
 	});
 
-	it("Should return projects when putUser is called", async () => {
-		const fakeData = [{ message: "ok" }];
-		const user: AccountModel.User = {
-			clientId: id,
-			clientName: "John Doe",
-			clientEmail: "johndoe@mail.es",
-			clientPassword: "123456",
-			points: 100,
-			discountQR: null,
+	it("Should return new user when putUser is called", async () => {
+		const request: AuthModel.Request = {
+			clientEmail: "francisdoe@mail.es",
+			clientPassword: "password123",
+			clientName: "Francis Doe",
 		};
+		const token = createToken(request.clientName);
+		(axios.put as jest.Mock).mockResolvedValue({ data: token, status: 200 });
 
-		(global.fetch as jest.Mock).mockResolvedValue({
-			ok: true,
-			status: 200,
-			json: async () => fakeData,
-		});
+		const response = await accountApiService().putUser(request, id);
 
-		const response = await accountApiService().putUser(user);
-
-		expect(fetch).toHaveBeenCalledWith(`/api/account/${id}`, {
-			method: "PUT",
+		expect(axios.put).toHaveBeenCalledWith(`/api/account/${id}`, {
 			headers: {
 				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(user),
+			}, user: request
 		});
-		expect(response).toEqual(fakeData);
-	});
-
-	it("Should return projects when deleteUser is called", async () => {
-		(global.fetch as jest.Mock).mockResolvedValue({
-			ok: true,
-			status: 204,
-			text: async () => "",
-		});
-
-		await accountApiService().deleteUser(id);
-
-		expect(fetch).toHaveBeenCalledWith(`/api/account/${id}`, {
-			method: "DELETE",
-		});
+		expect(response).toEqual(token);
 	});
 });
