@@ -5,7 +5,7 @@ import { errors } from "@/helpers/api/errors.helper";
 import { AxiosError } from "axios";
 
 export function GET(request: NextRequest) {
-  const token = request.headers.get("token");
+  const token = request.headers.get("bearer-token");
   try {
     if (!token) {
       const error = new Error(errors[500].message);
