@@ -14,7 +14,7 @@ export const authApiService = (): AuthApiService => ({
 	signin: async (credentials: AuthModel.Request) => {
 		const response = await axios.post('/api/auth', credentials);
 		if (response.status !== 200) {
-			throw new Error("Failed to delete user data");
+			throw new Error("Failed to signin user");
 		}
 		return response.data;
 	},

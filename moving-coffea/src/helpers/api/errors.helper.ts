@@ -2,7 +2,7 @@ export const errors = {
   500: {
     message: "500 Internal Server Error",
     cause:
-      "The user identification fails. Please sign-in to solve thge problem.",
+      "The user identification fails. Please sign-in to solve the problem.",
   },
   400: {
     message: "400 Bad Request",

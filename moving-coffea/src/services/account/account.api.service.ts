@@ -12,10 +12,10 @@ export const accountApiService = (): AccountApiService => ({
 	},
 	putUser: async (user: AuthModel.Request & { name: string }, userId: string) => {
 		const response = await axios.put(`/api/account/${userId}`, {
+			user,
 			headers: {
 				"Content-Type": "application/json",
-			}, user
-
+			}
 		});
 		if (response.status !== 200) {
 			throw new Error("Failed to update user data");

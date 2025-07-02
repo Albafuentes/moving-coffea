@@ -6,7 +6,7 @@ export const overviewApiService = (): OverviewApiService => ({
         const response = await axios.get("/api/overview");
         
         if (response.status !== 200) {
-            throw new Error("Failed to fetch home data");
+            throw new Error("Failed to fetch overview data");
         }
         return response.data;
     },
