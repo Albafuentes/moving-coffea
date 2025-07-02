@@ -22,9 +22,8 @@ const config: Config = {
 		"!src/**/*.d.ts",
 		"!src/**/index.{js,jsx,ts,tsx}",
 	],
-
 	setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
-
+	modulePathIgnorePatterns: ["<rootDir>/.next/"],
 	globals: {
 		"ts-jest": {
 			diagnostics: {

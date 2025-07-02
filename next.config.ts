@@ -6,14 +6,6 @@ const nextConfig: NextConfig = {
   //images: { domains: [] },
   trailingSlash: false,
   output: 'standalone',
-  
-  webpack: (config) => {
-    config.resolve.alias['<YOUR MODULE NAME>'] = path.resolve(
-      '<YOUR MODULE PATH AS SHOWN IN THE WARNING>'
-    );
-    return config;
-  },
-
 };
 
 export default nextConfig;
