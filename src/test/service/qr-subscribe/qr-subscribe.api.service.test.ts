@@ -20,7 +20,6 @@ describe('qrSubscribeApiService consumeDiscount', () => {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // biome-ignore lint/suspicious/noExplicitAny: var global as typeof globalThis
     (global as any).EventSource = jest.fn(() => mockEventSourceInstance);
   });
 
