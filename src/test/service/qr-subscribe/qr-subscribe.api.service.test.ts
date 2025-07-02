@@ -29,7 +29,6 @@ describe('qrSubscribeApiService consumeDiscount', () => {
 
     const promise = service.consumeDiscount('DISCOUNT10-ABC123XYZ', token);
 
-    // Simular mensaje SSE que activa resolución
     mockEventSourceInstance.onmessage?.({
       data: JSON.stringify({ redeemed: true }),
     } as MessageEvent);
