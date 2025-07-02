@@ -1,5 +1,5 @@
 import { errors } from "@/helpers/api/errors.helper";
-import { createToken } from "@/helpers/api/jwt.helper";
+import { createBearerToken } from "@/helpers/api/jwt.helper";
 import type { AccountModel } from "@/types/account/model.type";
 import type { StatusError } from "@/types/api.types";
 import type { AuthModel } from "@/types/auth/model.type";
@@ -33,21 +33,21 @@ export async function POST(request: NextRequest) {
             throw errorStatus;
         }
 
-        const token = createToken(credentials.clientName);
+        const token = createBearerToken(credentials.clientName);
         return new Response(JSON.stringify({ token }), {
-            headers: { "Content-Type": "application/json" },
-            status: 200,
+        headers: { "Content-Type": "application/json" },
+        status: 200,
         });
 
-    } catch (error: unknown) {
-        if (error instanceof AxiosError) {
-            return new Response(`${error.message}: ${error.cause}`, {
-                status: error.response?.status || 500,
-            });
-        }
-
-        return new Response(`${error}`);
+} catch (error: unknown) {
+    if (error instanceof AxiosError) {
+        return new Response(`${error.message}: ${error.cause}`, {
+            status: error.response?.status || 500,
+        });
     }
+
+    return new Response(`${error}`);
+}
 }
 
 //signout

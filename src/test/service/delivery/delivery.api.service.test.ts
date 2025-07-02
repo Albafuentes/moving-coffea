@@ -1,3 +1,4 @@
+import { createBearerToken } from "@/helpers/api/jwt.helper";
 import { deliveryApiService } from "@/services/delivery/delivery.api.service";
 import "@testing-library/jest-dom";
 import axios from "axios";
@@ -7,6 +8,7 @@ jest.mock("axios");
 describe("account-api.service", () => {
 
 	it("Should return projects when getUser is called", async () => {
+		const token = createBearerToken('John Doe');
 		const mockedResponse = [{
 			productId: "a0b859d6-2673-4257-9e49-c2228fe1539c",
 			productName: "coffea short",
@@ -26,9 +28,9 @@ describe("account-api.service", () => {
 		  }];
 		(axios.get as jest.Mock).mockResolvedValue({ data: mockedResponse, status: 200 });
 
-		const response = await deliveryApiService().getMenu();
+		const response = await deliveryApiService().getMenu(token);
 
-		expect(axios.get).toHaveBeenCalledWith("/api/delivery/menu");
+		expect(axios.get).toHaveBeenCalledWith("/api/delivery/menu", {"headers": {"Accept": "application/json", "Content-Type": "application/json", "bearer-token": token}});
 		expect(response).toEqual(mockedResponse);
 	});
 });

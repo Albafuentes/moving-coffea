@@ -1,5 +1,5 @@
 import { errors } from "@/helpers/api/errors.helper";
-import { createToken } from "@/helpers/api/jwt.helper";
+import { createBearerToken } from "@/helpers/api/jwt.helper";
 import type { AccountModel } from "@/types/account/model.type";
 import type { StatusError } from "@/types/api.types";
 import type { AuthModel } from "@/types/auth/model.type";
@@ -7,12 +7,12 @@ import { AxiosError } from "axios";
 import { NextResponse, type NextRequest } from "next/server";
 
 let authUserInfo: AccountModel.User & AuthModel.Request = {
-    clientEmail: process.env.NEXT_PUBLIC_USERNAME ?? "",
-    clientPassword: process.env.NEXT_PUBLIC_PASSWORD ?? "",
-    clientId: "1234567890",
-    clientName: "John Doe",
-    points: 50,
-    discountQR: "DISCOUNT10-ABC123XYZ"
+  clientEmail: process.env.NEXT_PUBLIC_USERNAME ?? "",
+  clientPassword: process.env.NEXT_PUBLIC_PASSWORD ?? "",
+  clientId: "1234567890",
+  clientName: "John Doe",
+  points: 50,
+  discountQR: "DISCOUNT10-ABC123XYZ"
 }
 
 export async function PUT(
@@ -21,14 +21,23 @@ export async function PUT(
 ) {
   const { id } = await params;
   const credentials: AuthModel.Request = await request.json();
+  const token = request.headers.get("bearer-token");
+
+  if (!token) {
+    const error = new Error(errors[500].message);
+    error.cause = errors[500].cause;
+    const errorStatus: StatusError = { ...error, statusCode: 500 };
+    throw errorStatus;
+  }
+
+  if (!id || id !== authUserInfo.clientId) {
+    const error = new Error(errors[404].message);
+    error.cause = errors[404].cause;
+    const errorStatus: StatusError = { ...error, statusCode: 404 };
+    throw errorStatus;
+  }
 
   try {
-    if (!id || id !== authUserInfo.clientId) {
-      const error = new Error(errors[404].message);
-      error.cause = errors[404].cause;
-      const errorStatus: StatusError = { ...error, statusCode: 404 };
-      throw errorStatus;
-    }
 
     authUserInfo = {
       ...authUserInfo,
@@ -37,7 +46,7 @@ export async function PUT(
       clientPassword: credentials.clientPassword
     };
 
-    const token = createToken(credentials.clientName);
+    const token = createBearerToken(credentials.clientName);
 
     return NextResponse.json({ token }, { status: 200 });
   } catch (error: unknown) {
@@ -56,14 +65,24 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+  const token = request.headers.get("bearer-token");
+
+  if (!token) {
+    const error = new Error(errors[500].message);
+    error.cause = errors[500].cause;
+    const errorStatus: StatusError = { ...error, statusCode: 500 };
+    throw errorStatus;
+  }
+
+  if (!id || id !== authUserInfo.clientId) {
+    const error = new Error(errors[404].message);
+    error.cause = errors[404].cause;
+    const errorStatus: StatusError = { ...error, statusCode: 404 };
+    throw errorStatus;
+  }
+
 
   try {
-    if (!id || id !== authUserInfo.clientId) {
-      const error = new Error(errors[404].message);
-      error.cause = errors[404].cause;
-      const errorStatus: StatusError = { ...error, statusCode: 404 };
-      throw errorStatus;
-    }
 
     const response: AccountModel.User = {
       clientId: authUserInfo.clientId,

@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import axios from "axios";
 import { response as mockResponse } from "@/mocks/api/account/response.mock";
-import { createToken } from "@/helpers/api/jwt.helper";
+import { createBearerToken } from "@/helpers/api/jwt.helper";
 import type { AuthModel } from "@/types/auth/model.type";
 import { authApiService } from "@/services/auth/auth.api.service";
 
@@ -23,8 +23,8 @@ describe("account-api.service", () => {
 		expect(axios.delete).toHaveBeenCalledWith('/api/auth');
 	});
 
-	it("Should return token when signin is called", async () => {
-		const token = createToken(mockResponse.clientName);
+	it("Should return bearer-token when signin is called", async () => {
+		const token = createBearerToken(mockResponse.clientName);
 		(axios.post as jest.Mock).mockResolvedValue({ data: token, status: 200 });
 
 		const resquest: AuthModel.Request = {

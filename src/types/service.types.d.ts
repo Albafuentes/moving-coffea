@@ -9,5 +9,6 @@ export namespace ServiceTypes {
 		account: AccountApiService;
 		delivery: DeliveryApiService;
 		auth: AuthApiService;
+		qrSubscribe: QrSubscribeApiService;
 	}
 }
